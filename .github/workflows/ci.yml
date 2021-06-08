@@ -1,0 +1,59 @@
+name: CI
+
+on: [push]
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version: [8.0]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ matrix.php_version }}-${{ hashFiles('**/composer.lock') }}
+      - uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php_version }}
+      - uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php_version }}
+          command: static-analysis
+  code-style:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version: [8.0]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ matrix.php_version }}-${{ hashFiles('**/composer.lock') }}
+      - uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php_version }}
+      - uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php_version }}
+          command: code-style
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php_version: [8.0]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ matrix.php_version }}-${{ hashFiles('**/composer.lock') }}
+      - uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php_version }}
+      - uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php_version }}
+          command: phpunit
