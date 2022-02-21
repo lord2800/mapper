@@ -59,15 +59,11 @@ final class Mapping implements JsonSerializable
         foreach ($properties as $name => $fields) {
             foreach ($fields as $field) {
                 $parsedField = $this->parseProperty($field);
-                // TODO this makes extending Field or Subfield impossible
-                switch (get_class($field)) {
-                    case Field::class:
-                        $result[$name] = $parsedField;
-                        break;
-                    case Subfield::class:
-                        $result[$field->name]['fields'][$name] = $parsedField;
-                        break;
-                }
+                match (true) {
+                    $field instanceof Subfield => $result[$field->name]['fields'][$name] = $parsedField,
+                    $field instanceof Field => $result[$name] = $parsedField,
+                    default => throw new \Exception('Field \'' . $name . '\' is not an instance of Field or Subfield'),
+                };
             }
         }
         return $result;
