@@ -38,8 +38,8 @@ final class Mapping implements JsonSerializable
 
         $results = [];
 
-        if (!empty($properties['properties'])) {
-            $results['mappings'] = $properties;
+        if (!empty($properties)) {
+            $results['mappings'] = ['properties' => $properties];
         }
 
         if (!empty($settings)) {
@@ -70,7 +70,7 @@ final class Mapping implements JsonSerializable
                 }
             }
         }
-        return ['properties' => $result];
+        return $result;
     }
 
     private function parseProperty(Field $field): array
@@ -83,7 +83,7 @@ final class Mapping implements JsonSerializable
     private function parseSettings(array $settings): array
     {
         $result = [];
-        foreach ($this->settings as $setting) {
+        foreach ($settings as $setting) {
             $result = array_merge($result, $setting->properties);
         }
         return $result;
@@ -92,7 +92,7 @@ final class Mapping implements JsonSerializable
     private function parseAliases(array $aliases): array
     {
         $result = [];
-        foreach ($this->aliases as $alias) {
+        foreach ($aliases as $alias) {
             $result[$alias->name] = $alias->properties;
         }
         return $result;

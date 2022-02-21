@@ -8,6 +8,7 @@ use ReflectionClass;
 use ReflectionAttribute;
 use ReflectionProperty;
 use Mapper\Attributes\{Field,Setting,Alias};
+use Mapper\Mapping;
 
 final class Generator
 {
