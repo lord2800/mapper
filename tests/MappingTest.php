@@ -59,7 +59,8 @@ class MappingTest extends TestCase
 
     public function testMappingThrowsWithInvalidSubfield()
     {
-        self::expectException(Exception::class, 'Missing field test for subfield test.sub');
+        self::expectException(Exception::class);
+        self::expectExceptionMessage('Missing field \'test\' for subfield \'test.sub\'');
 
         $mapping = new Mapping([
             'sub' => [new Subfield('test', 'text')]
